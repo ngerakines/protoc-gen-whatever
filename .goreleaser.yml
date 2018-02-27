@@ -7,7 +7,7 @@ release:
 build:
   binary: protoc-gen-whatever
   main: .
-  ldflags: -s -w -X github.com/ngerakines/whatever/cmd/protoc-gen-whatever.timestamp={{.Date}} -X github.com/ngerakines/whatever/cmd/protoc-gen-whatever.commitHash={{.Commit}} -X github.com/ngerakines/whatever/cmd/protoc-gen-whatever.gitTag={{.Version}}
+  ldflags: -s -w -X github.com/ngerakines/protoc-gen-whatever/cmd/protoc-gen-whatever.timestamp={{.Date}} -X github.com/ngerakines/protoc-gen-whatever/cmd/protoc-gen-whatever.commitHash={{.Commit}} -X github.com/ngerakines/protoc-gen-whatever/cmd/protoc-gen-whatever.gitTag={{.Version}}
   goos:
     - darwin
     - linux
