@@ -39,9 +39,10 @@ func InstallDeps() error {
 }
 
 // Clean up after yourself
-func Clean() {
+func Clean() error {
 	fmt.Println("Cleaning...")
 	os.RemoveAll("protoc-gen-whatever")
+	return sh.Rm("dist")
 }
 
 func Release() (err error) {
