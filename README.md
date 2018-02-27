@@ -14,11 +14,15 @@ This plugin is used when the `--whatever_out` and `--whatever_opt` arguments are
 
 The `--whatever_out` argument is used to set the location of generated output files.
 
-The `--whatever_opt` argument is used to set the input template and optional output file name.
+The `--whatever_opt` argument is used to set the input template and optional output file name. This argument is optional and defaults to `--whatever_opt=whatever.tpl`.
 
 For example, with `--whatever_out=. --whatever_opt=input.tpl` the plugin will look for a file named `input.tpl` in the current working directory and generate a file namee `output` in the current working directory.
 
 With `--whatever_out=cmd --whatever_opt=templates/cobra.tpl,commands.go`, the plugin will look for the `templates/cobra.tpl` file as the template and render the file `cmd/commands.go`.
+
+# Templates
+
+The input to the template is the `CodeGeneratorRequest` structure as defined in `google/protobuf/compiler/plugin.proto`.
 
 # Usage
 

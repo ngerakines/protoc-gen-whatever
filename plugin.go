@@ -43,18 +43,14 @@ func RunPlugin(request *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGenerato
 		return nil, err
 	}
 
-	customTemplate := ""
-
-	if options.TemplateFile != "" {
-		data, err := ioutil.ReadFile(options.TemplateFile)
-		if err != nil {
-			return nil, err
-		}
-
-		customTemplate = string(data)
+	data, err := ioutil.ReadFile(options.TemplateFile)
+	if err != nil {
+		return nil, err
 	}
 
-	t := template.Must(template.New("stuff").Parse(customTemplate))
+	templateData := string(data)
+
+	t := template.Must(template.New(options.TemplateFile).Parse(templateData))
 	var tpl bytes.Buffer
 	if err := t.Execute(&tpl, request); err != nil {
 		return nil, err
