@@ -13,12 +13,6 @@ import (
 	"github.com/ngerakines/protoc-gen-whatever"
 )
 
-var (
-	commitHash string
-	timestamp  string
-	gitTag     = "0.1.0"
-)
-
 func main() {
 	flags := whatever.ParseFlags(os.Stdout, os.Args)
 
