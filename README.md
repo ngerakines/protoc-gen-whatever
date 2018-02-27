@@ -70,6 +70,15 @@ simple.proto
 *GetFooRes
 ```
 
+# Release
+
+To release new versions, use [mage](https://github.com/magefile/mage).
+
+    $ go get github.com/goreleaser/goreleaser
+    $ go get -u -d github.com/magefile/mage
+    $ mage clean
+    $ TAG=0.2.0 mage release
+
 # Credit
 
 This project was inspired by the work of [David Muto](https://github.com/pseudomuto) on [https://github.com/pseudomuto/protoc-gen-doc/](https://github.com/pseudomuto/protoc-gen-doc/).
