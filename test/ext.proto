@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "google/protobuf/descriptor.proto";
+
+package test;
+
+extend google.protobuf.FileOptions {
+    bool ignore_file = 60000;
+}
+
+extend google.protobuf.ServiceOptions {
+    bool ignore_service = 60001;
+}
+
+extend google.protobuf.MethodOptions {
+    bool ignore_method = 60002;
+}

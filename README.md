@@ -70,6 +70,10 @@ simple.proto
 *GetFooRes
 ```
 
+# Testing
+
+    $ protoc --go_out=plugins=grpc:. test/*.proto
+
 # Release
 
 To release new versions, use [mage](https://github.com/magefile/mage).

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package test;
+
+message Person {
+    string name = 1;
+}
+
+message House {
+    repeated Person people = 1;
+}

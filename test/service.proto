@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+import "ext.proto";
+
+package test;
+
+option (ignore_file) = false;
+
+service Calculator {
+    option (ignore_service) = false;
+
+    rpc Calcuate(CalcuateReq) returns (CalcuateRes);
+}
+
+service OtherCalculator {
+    option (ignore_service) = true;
+
+    rpc Calcuate(CalcuateReq) returns (CalcuateRes);
+}
+
+service NeatCalculator {
+    rpc Calcuate(CalcuateReq) returns (CalcuateRes) {
+        option (ignore_method) = true;
+    }
+}
+
+message CalcuateReq {
+    string input = 1;
+}
+
+message CalcuateRes {
+    oneof result {
+        Error error = 1;
+        string results = 2;
+    }
+}
+
+message Error {
+    string reason = 1;
+}

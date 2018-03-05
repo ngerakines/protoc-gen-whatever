@@ -2,24 +2,23 @@ package whatever
 
 import (
 	"bytes"
-	"html/template"
 	"io/ioutil"
-	"path"
 	"strings"
+	"text/template"
 
 	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	"github.com/golang/protobuf/protoc-gen-go/plugin"
 )
 
 type PluginOptions struct {
 	TemplateFile string
-	OutputFile   string
+	Suffix       string
 }
 
 func ParseOptions(req *plugin_go.CodeGeneratorRequest) (*PluginOptions, error) {
 	options := &PluginOptions{
 		TemplateFile: "whatever.tpl",
-		OutputFile:   "output",
 	}
 
 	params := req.GetParameter()
@@ -31,7 +30,7 @@ func ParseOptions(req *plugin_go.CodeGeneratorRequest) (*PluginOptions, error) {
 
 	options.TemplateFile = parts[0]
 	if len(parts) > 1 {
-		options.OutputFile = path.Base(parts[1])
+		options.Suffix = parts[1]
 	}
 
 	return options, nil
@@ -50,19 +49,47 @@ func RunPlugin(request *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGenerato
 
 	templateData := string(data)
 
-	t := template.Must(template.New(options.TemplateFile).Parse(templateData))
-	var tpl bytes.Buffer
-	if err := t.Execute(&tpl, request); err != nil {
-		return nil, err
+	funcMap := template.FuncMap{
+		"title":           strings.Title,
+		"lastPart":        lastPart,
+		"splitCammelJoin": splitCammelJoin,
+		"hasServices":     hasServices,
 	}
 
-	result := tpl.String()
-
 	resp := new(plugin_go.CodeGeneratorResponse)
-	resp.File = append(resp.File, &plugin_go.CodeGeneratorResponse_File{
-		Name:    proto.String(options.OutputFile),
-		Content: proto.String(string(result)),
-	})
+
+	for _, protoFile := range request.ProtoFile {
+
+		outputFile := generatedFileName(protoFile, options)
+
+		t := template.Must(template.New(options.TemplateFile).Funcs(funcMap).Parse(templateData))
+		var tpl bytes.Buffer
+		if err := t.Execute(&tpl, protoFile); err != nil {
+			return nil, err
+		}
+
+		result := tpl.String()
+
+		trimmedResult := strings.TrimSpace(result)
+		if trimmedResult != "" {
+			resp.File = append(resp.File, &plugin_go.CodeGeneratorResponse_File{
+				Name:    proto.String(outputFile),
+				Content: proto.String(string(result)),
+			})
+		}
+
+	}
 
 	return resp, nil
+}
+
+func generatedFileName(protoFile *descriptor.FileDescriptorProto, options *PluginOptions) string {
+	fileName := protoFile.GetName()
+	fileName = strings.Replace(fileName, "/", "_", -1)
+	if strings.HasSuffix(fileName, ".proto") {
+		fileName = fileName[:len(fileName)-len(".proto")]
+	}
+	outputFile := fileName + options.Suffix + ".go"
+
+	return outputFile
 }
