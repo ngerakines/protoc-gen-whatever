@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+import "ext.proto";
+
+package test;
+
+option (ignore_file) = false;
