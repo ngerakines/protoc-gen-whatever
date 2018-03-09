@@ -26,6 +26,23 @@ func lastPart(splitter, input interface{}) interface{} {
 	return parts[len(parts)-1]
 }
 
+func replace(old, new, input interface{}) interface{} {
+	newString := realString(new)
+	if newString == "" {
+		return input
+	}
+	oldString := realString(old)
+	if oldString == "" {
+		return input
+	}
+	inputString := realString(input)
+	if inputString == "" {
+		return input
+	}
+
+	return strings.Replace(inputString, oldString, newString, -1)
+}
+
 func splitCammelJoin(splitter, input interface{}) interface{} {
 	inputString := realString(input)
 	if inputString == "" {

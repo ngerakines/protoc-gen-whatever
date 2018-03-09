@@ -54,6 +54,7 @@ func RunPlugin(request *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGenerato
 		"lastPart":        lastPart,
 		"splitCammelJoin": splitCammelJoin,
 		"hasServices":     hasServices,
+		"replace":         replace,
 	}
 
 	resp := new(plugin_go.CodeGeneratorResponse)

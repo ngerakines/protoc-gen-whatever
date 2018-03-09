@@ -31,6 +31,29 @@ func TestSplitHelper(t *testing.T) {
 	}
 }
 
+func TestReplaceHelper(t *testing.T) {
+
+	tests := map[string]string{
+		`{{ "protocol.buffers" | replace "." "/" }}`:                          "protocol/buffers",
+		`{{ "goodbye.world" | replace "goodbye" "hello" | replace "." " " }}`: "hello world",
+	}
+
+	for templateData, expected := range tests {
+		funcMap := template.FuncMap{
+			"replace": replace,
+		}
+
+		tpl := template.Must(template.New("test").Funcs(funcMap).Parse(templateData))
+		var output bytes.Buffer
+		if err := tpl.Execute(&output, nil); err != nil {
+			t.Fatalf("%v", err)
+		}
+		if output.String() != expected {
+			t.Fatalf("Expected '%s' but got '%s'", expected, output.String())
+		}
+	}
+}
+
 func TestSplitCammelJoin(t *testing.T) {
 	tests := map[string]string{
 		`{{ "nick.gerakines" | splitCammelJoin "." }}`:          "NickGerakines",
