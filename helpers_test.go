@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"testing"
 	"text/template"
-
-	_ "github.com/ngerakines/protoc-gen-whatever/test"
 )
 
 func TestSplitHelper(t *testing.T) {
