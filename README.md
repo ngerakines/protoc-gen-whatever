@@ -53,13 +53,13 @@ message GetFooRes {
 And the template file `simple.tpl`:
 
 ```
-{{range .ProtoFile}}{{.Name}}{{range .MessageType}}
-*{{.Name}}{{end}}{{end}}
+{{.Name}}{{range .MessageType}}
+*{{.Name}}{{end}}
 ```
 
 Running the command:
 
-    $ protoc --plugin=protoc-gen-whatever --whatever_out=. --whatever_opt=simple.tpl,output.txt simple.proto
+    $ protoc --plugin=./protoc-gen-whatever --whatever_out=. --whatever_opt=./test/simple.tpl,output.txt ./test/simple.proto
 
 Yields the file `output.txt`:
 
